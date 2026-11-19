@@ -1,56 +1,66 @@
-﻿const string PLAYERS_FILE = "players.txt";
+﻿
+
+
+// ==== Setup ====
+const string PLAYERS_FILE = "players.txt";
 const string POINT_FILE = "points.txt";
 const string HISTORY_FILE = "history.txt";
 const int MAX_POINTS = 20;
 
+//Look for the data files next to Program.cs
+string projectFolder = Path.GetFullPath(
+    Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
+Directory.SetCurrentDirectory(projectFolder);
+
 string[] names = File.ReadAllLines(PLAYERS_FILE);
 string[] point = File.ReadAllLines(POINT_FILE);
 
-//Look for the data files next to Program.cs
-string projectFolder = Path.GetFullPath(
-    Path.Combine(AppContext.BaseDirectory, "..","..",".."));
-Directory.SetCurrentDirectory(projectFolder);
-
-
-//Part 1: The Standings
+// ==== Part 1: The Standings ====
 Console.Write("PLAYER".PadRight(11));
 Console.Write("POINTS\n");
 
-string[] playerOutput = { names.ToString() }; 
-string[] pointOutput = { point.ToString() };
-
-File.WriteAllLines(PLAYERS_FILE, playerOutput);
 
 
 
-
-
-
-
-
-
-
-
-
-/*
-static int LeaderIndex(string[] points)
+for (int i = 0; i < names.Length; i++)
 {
-    int playerPoint = 0;
-    int topPoints = 0;
+    Console.WriteLine(names[i].PadRight(11) + point[i]);
+}
+Console.WriteLine($"Leader: {LeaderIndex(0)}");
+Console.WriteLine($"Season total: ");
 
-    for (int i = 0; i < point.Length; i++)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ==== METHODS ====
+static int LeaderIndex(int pts)
+{
+    int topPoints = 0;
+    
+    foreach(int p in Convert.ToString(File.ReadAllLines(POINT_FILE)))
     {
-        if (playerPoint > topPoints)
+        if (p > topPoints)
         {
-            topPoints = playerPoint;
+            topPoints = p;
         }
     }
-    return 
+    return topPoints;
 }
 
 
 
-
+/*
 static int TotalPoints(string[] points);
 {
     foreach(string point in points[])
