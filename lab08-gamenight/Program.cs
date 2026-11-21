@@ -2,8 +2,10 @@
 
 
 // ==== Setup ====
+using System.Drawing;
+
 const string PLAYERS_FILE = "players.txt";
-const string POINT_FILE = "points.txt";
+const string POINTS_FILE = "points.txt";
 const string HISTORY_FILE = "history.txt";
 const int MAX_POINTS = 20;
 
@@ -13,29 +15,25 @@ string projectFolder = Path.GetFullPath(
 Directory.SetCurrentDirectory(projectFolder);
 
 string[] names = File.ReadAllLines(PLAYERS_FILE);
-string[] point = File.ReadAllLines(POINT_FILE);
+string[] points = File.ReadAllLines(POINTS_FILE);
+
 
 // ==== Part 1: The Standings ====
 Console.Write("PLAYER".PadRight(11));
 Console.Write("POINTS\n");
 
-
+int indexResult = LeaderIndex(points);
 
 
 for (int i = 0; i < names.Length; i++)
 {
-    Console.WriteLine(names[i].PadRight(11) + point[i]);
+    Console.WriteLine(names[i].PadRight(11) + points[i]);
 }
-Console.WriteLine($"Leader: {LeaderIndex(0)}");
-Console.WriteLine($"Season total: ");
+Console.WriteLine($"Leader: {names[indexResult]} with {points[indexResult]}");
+Console.WriteLine($"Season total: {TotalPoints(points)}");
 
 
-
-
-
-
-
-
+// ==== Part 2: Game Night ====
 
 
 
@@ -44,32 +42,35 @@ Console.WriteLine($"Season total: ");
 
 
 // ==== METHODS ====
-static int LeaderIndex(int pts)
+static int LeaderIndex(string[] points)
 {
-    int topPoints = 0;
-    
-    foreach(int p in Convert.ToString(File.ReadAllLines(POINT_FILE)))
+    int bestPoints = 0;
+    int bestPosition = 0;
+
+    for (int i = 0; i < points.Length; i++)
     {
-        if (p > topPoints)
+        if (Convert.ToInt32(points[i]) > bestPoints)
         {
-            topPoints = p;
+            bestPoints = Convert.ToInt32(points[i]);
+            bestPosition = i;
         }
+
     }
-    return topPoints;
+    return bestPosition;
+
 }
 
-
-
-/*
-static int TotalPoints(string[] points);
+static int TotalPoints(string[] points)
 {
-    foreach(string point in points[])
-    {
+    int pointSum = 0;
 
+    foreach(string p in points)
+    {
+        pointSum += Convert.ToInt32(p);    
     }
+    return pointSum;
 }
 
-leader location method?
+//leader location method?
 
-static string HistoryEntry(int night, string winner, int points);
-*/
+//static string HistoryEntry(int night, string winner, int points);
